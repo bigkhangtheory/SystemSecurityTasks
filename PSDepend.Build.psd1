@@ -16,10 +16,10 @@
     BuildHelpers                 = 'latest'
     # Helper functions for PowerShell CI/CD scenarios
 
-    Datum                        = '0.39.0'
+    Datum                        = 'latest'
     # Module to manage Hierachical Configuration Data
 
-    'Datum.InvokeCommand'       = '0.1.2'
+    'Datum.InvokeCommand'        = 'latest'
     # Datum Handler module to encrypt and decrypt secrets in Datum using Dave Wyatt's ProtectedData module
 
     'Datum.ProtectedData'        = 'latest'
@@ -56,10 +56,13 @@
     # DSC Resources
     # -------------------------------------------------------------------------
     ComputerManagementDsc        = '8.4.0'
+    # DSC resources for configuration of a Windows computer.
+    # These DSC resources allow you to perform computer management tasks, such as renaming the computer,
+    # joining a domain and scheduling tasks as well as configuring items such as virtual memory, event logs, time zones and power settings.
 
     SecurityPolicyDsc            = '2.10.0.0'
     # A wrapper around secedit.exe to allow you to configure local security policies. This resource requires a Windows OS with secedit.exe.
 
     xPSDesiredStateConfiguration = '9.1.0'
-
+    # DSC resources for configuring common operating systems features, files and settings.
 }
