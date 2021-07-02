@@ -1,0 +1,5 @@
+Roles:
+  - Role: Administrators
+    Enabled: false
+  - Role: Users
+    Enabled: false
