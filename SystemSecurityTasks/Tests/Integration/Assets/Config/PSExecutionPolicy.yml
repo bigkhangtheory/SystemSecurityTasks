@@ -1,0 +1,5 @@
+Policies:
+  - Scope: LocalMachine
+    ExecutionPolicy: RemoteSigned
+  - Scope: CurrentUser
+    ExecutionPolicy: RemoteSigned
