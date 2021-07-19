@@ -1,0 +1,7 @@
+Software:
+  - Name: Carbon Black Cloud
+    Status: Running
+    Ensure: Present
+  - Name: Windows Defender
+    Status: Running
+    Ensure: Present
