@@ -60,6 +60,9 @@
     # These DSC resources allow you to perform computer management tasks, such as renaming the computer,
     # joining a domain and scheduling tasks as well as configuring items such as virtual memory, event logs, time zones and power settings.
 
+    EndPointProtectionDSC        = '1.0.0.0'
+    # This DSC module is used to monitor the status of Antivirus software on Virtual Machines.
+    
     SecurityPolicyDsc            = '2.10.0.0'
     # A wrapper around secedit.exe to allow you to configure local security policies. This resource requires a Windows OS with secedit.exe.
 
