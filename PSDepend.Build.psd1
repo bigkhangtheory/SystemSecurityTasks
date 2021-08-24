@@ -63,9 +63,18 @@
     EndPointProtectionDSC        = '1.0.0.0'
     # This DSC module is used to monitor the status of Antivirus software on Virtual Machines.
     
+    SChannelDsc                  = '1.2.2'
+    # This DSC module is used to manage Secure Channel (SChannel) configurations.
+    
     SecurityPolicyDsc            = '2.10.0.0'
     # A wrapper around secedit.exe to allow you to configure local security policies. This resource requires a Windows OS with secedit.exe.
 
+    WindowsDefender              = '1.0.0.4'
+    # Windows Defender module allows you to configure Windows Defender settings.
+
+    WSManDsc                     = '3.1.1'
+    # The WSManDsc module contains DSC resources for configuring WS-Management and PowerShell Remoting.
+    
     xPSDesiredStateConfiguration = '9.1.0'
     # DSC resources for configuring common operating systems features, files and settings.
 }
