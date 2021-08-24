@@ -55,6 +55,9 @@
     # -------------------------------------------------------------------------
     # DSC Resources
     # -------------------------------------------------------------------------
+    AuditPolicyDsc               = '1.4.0.0'
+    # The AuditPolicyDsc module allows you to configure and manage the advanced audit policy on all currently supported versions of Windows.
+    
     ComputerManagementDsc        = '8.4.0'
     # DSC resources for configuration of a Windows computer.
     # These DSC resources allow you to perform computer management tasks, such as renaming the computer,
