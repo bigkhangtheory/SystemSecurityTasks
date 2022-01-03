@@ -9,7 +9,7 @@
     "plantuml.exportFormat": "png",
     "plantuml.exportOutDir": "Docs/Diagrams/out",
     "plantuml.render": "Local",
-    "editor.fontFamily": "'CaskaydiaCove NF',Consolas, 'Courier New', monospace",
+    "editor.fontFamily": "'Cascadia Code','CaskaydiaCove NF','Cascadia Mono',Consolas, 'Courier New', monospace",
     "powershell.codeFormatting.autoCorrectAliases": true,
     "powershell.codeFormatting.preset": "Allman",
     "powershell.codeFormatting.trimWhitespaceAroundPipe": true,

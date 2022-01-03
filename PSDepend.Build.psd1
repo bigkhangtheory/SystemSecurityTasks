@@ -12,7 +12,7 @@
     # -------------------------------------------------------------------------
     # PowerShell Modules
     # -------------------------------------------------------------------------
-    
+
     BuildHelpers                 = 'latest'
     # Helper functions for PowerShell CI/CD scenarios
 
@@ -57,27 +57,24 @@
     # -------------------------------------------------------------------------
     AuditPolicyDsc               = '1.4.0.0'
     # The AuditPolicyDsc module allows you to configure and manage the advanced audit policy on all currently supported versions of Windows.
-    
+
     ComputerManagementDsc        = '8.4.0'
     # DSC resources for configuration of a Windows computer.
     # These DSC resources allow you to perform computer management tasks, such as renaming the computer,
     # joining a domain and scheduling tasks as well as configuring items such as virtual memory, event logs, time zones and power settings.
 
-    EndPointProtectionDSC        = '1.0.0.0'
-    # This DSC module is used to monitor the status of Antivirus software on Virtual Machines.
-    
     SChannelDsc                  = '1.2.2'
     # This DSC module is used to manage Secure Channel (SChannel) configurations.
-    
+
     SecurityPolicyDsc            = '2.10.0.0'
     # A wrapper around secedit.exe to allow you to configure local security policies. This resource requires a Windows OS with secedit.exe.
 
-    WindowsDefender              = '1.0.0.4'
+    WindowsDefenderDsc              = '1.0.0.4'
     # Windows Defender module allows you to configure Windows Defender settings.
 
     WSManDsc                     = '3.1.1'
     # The WSManDsc module contains DSC resources for configuring WS-Management and PowerShell Remoting.
-    
+
     xPSDesiredStateConfiguration = '9.1.0'
     # DSC resources for configuring common operating systems features, files and settings.
 }

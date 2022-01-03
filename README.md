@@ -1,241 +1,103 @@
 # SystemSecurityTasks
 
-Windows PowerShell Desired State Configuration (DSC) provides a configuration platform that is based on open standards. This repo provides a structured project for building re-usable and composable **DSC Configurations** _(DSC Composite Resources)_ used to manage and configure system security policies and settings.
+This repo provides a structured project for building re-usable and composable **DSC configurations** used for managing and configuring system security policies and settings.
 
-For information about the scripts that perform work described by Configurations, see the GitHub repo for [DSC Resources](http://github.com/powershell/dscresources).
+Desired State Configuration (DSC) is a declarative management platform in PowerShell to configure, deploy, and manage systems.
 
-## Value Proposition
+If you are new to DSC, configurations, or resources, you can learn more about them [here](https://docs.microsoft.com/en-us/powershell/scripting/dsc/overview/overview).
 
-The value we're looking to provide, is to `do something similar to DSC Resource for System or Service Configurations.`
+## Project Overview
 
-We want to lower the bar of bootstrapping infrastructure with DSC, by re-using configurations of system or services that we have built and shared.
+This project aims to simplify and allow direct re-use of shared **DSC configurations** in new environments by:
 
-The value proposition model:
+- Providing a scaffolding project structure similar to PowerShell modules.
+- Creating a self-contained model by declaring and pulling project dependencies from a repository.
+- Pre-defining sane default Configuration Data within the DSC Configuration functions.
 
-> For **Administrators starting with Configuration Management**
->
-> Who **need to deploy systems or services in a systematic, consistent mannger**
->
-> Our **configuration repository** is **a re-usable build process for DSC configurations**
->
-> That **transforms Configuration into re-usable and composable DSC Composite Resources**
+### DSC Configurations
 
-## Intent
+The following **DSC configurations** are made available by this project.
 
-The intent is to:
+| Configurations | Description |
+| :------------- | :---------- |
 
-- simplify the way to consume a shared configuration
-- Allow direct re-use in new environment (no copy-paste/modification of DSC Config or data)
-- reduce the _cost_ of sharing, by automating the scaffolding (plaster), testing (pester, PSSA, Integration tests), building (Composite Resource), publishing to our internal [Powershell repository](https://repo.windows.mapcom.local/nuget/powershell/)
-- ensuring high quality, by allowing the use of a testing harness fit for TDD
-- Allow Build tools, tasks and scripts to be more standardized and re-usable
-- ensure quick and simple iterations during the development process
+---
 
-To achieve the intent, we should:
+## Project Dependencies
 
-- provide a familiar scaffolding structure similar to PowerShell modules
-- create a model that can be self contained (or bootstrap itself with minimum dependencies)
-- Be CI/CD tool independant
-- Declare Dependencies in Module Manifest for Pulling requirements from a gallery
-- Embed default Configuration Data alongside configs
-- Provides guidelines, conventions and design patterns (i.e. re-using Configuration Data)
+This project does not use Desired State Configuration (DSC) as an isolated technology. DSC is just one part in a pipeline that leverages several Microsoft products, PowerShell modules, and open-source projects.
 
-# Authoring guidelines
+### Project Resources
 
-The [DSC Resource repository](http://github.com/powershell/dscresources) includes guidance on authoring that is applicable to configurations as well.
-For more information, visit the links below:
+The **DSC sesources** used in this project include:
 
-- [Best practices](https://github.com/PowerShell/DscResources/blob/master/BestPractices.md)
-- [Style guidelines](https://github.com/PowerShell/DscResources/blob/master/StyleGuidelines.md)
-- [Maintainers](https://github.com/PowerShell/DscResources/blob/master/Maintainers.md)
+| Resource                         | Description                                                                                                                            |
+| :------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- |
+| [AuditPolicyDsc][]               | The AuditPolicyDsc module allows you to configure and manage the advanced audit policy on all currently supported versions of Windows. |
+| [ComputerManagementDsc][]        | DSC resources for configuration of a Windows computer.                                                                                 |
+| [SChannelDsc][]                  | This DSC module is used to manage Secure Channel (SChannel) configurations.                                                            |
+| [SecurityPolicyDsc][]            |                                                                                                                                        |
+| [WindowsDefenderDsc][]              |                                                                                                                                        |
+| [WSManDsc][]                     |                                                                                                                                        |
+| [xPSDesiredStateConfiguration][] |                                                                                                                                        |
 
-### Repository Structure
+> For information about the building blocks that perform work described by Configurations, see the GitHub repo for [DSC Resources][DSC Resources].
 
-```
-CompositeResourceName
-│   .gitignore
-│   .gitlab-ci.yml
-│   Build.ps1
-│   CompositeResourceName.PSDeploy.ps1
-│   PSDepend.Build.psd1
-│   README.md
-│
-├───Build
-│   ├───BuildHelpers
-│   │       Invoke-InternalPSDepend.ps1
-│   │       Resolve-Dependency.ps1
-│   │       Set-PSModulePath.ps1
-│   └───Tasks
-│           CleanBuildOutput.ps1
-│           CopyModule.ps1
-│           Deploy.ps1
-│           DownloadDscResources.ps1
-│           Init.ps1
-│           IntegrationTests.ps1
-│           SetPsModulePath.ps1
-│           TestReleaseAcceptance.ps1
-│
-├───BuildOutput
-│   │   localhost_Configuration1.mof
-│   │   localhost_Configuration2.mof
-│   │   localhost_Configuration3.mof
-│   │   localhost_ConfigurationN.mof
-│   │
-│   ├───Modules
-│   │
-│   └───Pester
-│           IntegrationTestResults.xml
-│
-├───docs
-│       Configuration1.md
-│       Configuration2.md
-│       Configuration3.md
-│       ConfigurationN.md
-│
-└───CompositeResourceName
-    │   CompositeResourceName.psd1
-    │
-    ├───DscResources
-    │   ├───Configuration1
-    │   │       Configuration1.psd1
-    │   │       Configuration1.psm1
-    │   │
-    │   ├───Configuration2
-    │   │       Configuration2.psd1
-    │   │       Configuration2.psm1
-    │   │
-    │   ├───Configuration3
-    │   │       Configuration3.psd1
-    │   │       Configuration3.psm1
-    │   │
-    │   ├───ConfigurationN
-    │   │       ConfigurationN.psd1
-    │   │       ConfigurationN.psm1
-    │   ...
-    │
-    └───Tests
-        ├───Acceptance
-        │       01 Gallery Available.Tests.ps1
-        │       02 HasDscResources.Tests.ps1
-        │       03 CanBeUninstalled.Tests.ps1
-        │
-        └───Integration
-            │   01 DscResources.Tests.ps1
-            │   02.Final.Tests.ps1
-            │
-            └───Assets
-                │   AllNodes.yml
-                │   Datum.yml
-                │   TestHelpers.psm1
-                │
-                └───Config
-                        Configuration1.yml
-                        Configuration2.yml
-                        Configuration3.yml
-                        ConfigurationN.yml
+---
 
-```
+### Project PowerShell modules
 
-The Composite Resource should be self contained, but will require files for building/testing or development.
-The repository will hence need some project files on top of the files required for functionality.
+The **PowerShell modules** used in the build pipeline of this project include:
 
-Adopting the 2 layers structure like so:
+| Module                                     | Description                                                                                                                        |
+| :----------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| [BuildHelpers][BuildHelpers]               | Helper functions for PowerShell CI/CD scenarios                                                                                    |
+| [Datum][Datum]                             | Module to manage Hierachical Configuration Data                                                                                    |
+| [Datum.InvokeCommand][Datum.InvokeCommand] | Datum Handler module to encrypt and decrypt secrets in Datum using Dave Wyatt's ProtectedData module                               |
+| [Datum.ProtectedData][Datum.ProtectedData] | Datum Handler module to encrypt and decrypt secrets in Datum using Dave Wyatt's ProtectedData module                               |
+| [DscBuildHelpers][DscBuildHelpers]         | Build Helpers for DSC Resources and Configurations                                                                                 |
+| [InvokeBuild][InvokeBuild]                 | Build and test automation in PowerShell                                                                                            |
+| [Pester][Pester]                           | Pester provides a framework for running BDD style Tests to execute and validate PowerShell commands inside of PowerShell.          |
+| [powershell-yaml][powershell-yaml]         | Powershell module for serializing and deserializing YAML.                                                                          |
+| [ProtectedData][ProtectedData]             | Encrypt and share secret data between different users and computers.                                                               |
+| [PSScriptAnalyzer][PSScriptAnalyzer]       | Provides script analysis and checks for potential code defects in the scripts by applying a group of built-in or customized rules. |
+| [PSDeploy][PSDeploy]                       | Module to simplify PowerShell based deployments                                                                                    |
 
-```
-+-- CompositeResourceName\
-    +-- CompositeResourceName\
-```
+---
 
-Allows to place Project files like build, CI configs and so on at the top level, and everything under the second level are the files that need to be shared and will be uploaded to the PSGallery.
+## Project Acknowledgements
 
-Within that second layer, the Configuration looks like a standard module with some specificities.
+This project is inspired by [Gael Colas'](https://gaelcolas.com) and his opinions on how an **infrastructure represented as code** with DSC could look like. Modeling **Puppet's R10K and Hiera**, this structure allows for separating staging environments via `git` branches so that successful changes can be promoted through each environment, while keeping the infrastructure consistent (more on this later).
 
-### Configuration Data
+The overall concept follows [The Release Pipeline Model](https://aka.ms/trpm), a whitepaper written by [Michael Greene](https://twitter.com/migreene) and [Steven Murawski](https://twitter.com/StevenMurawski) that is a must-read and describing itself like this:
 
-The configuration data, IMO, should be managed in an 'override-only' way to preserve the cattle vs pet case. That is:
+> There are benefits to be gained when patterns and practices from developer techniques are applied to operations. Notably, a fully automated solution where infrastructure is managed as code and all changes are automatically validated before reaching production. This is a process shift that is recognized among industry innovators. For organizations already leveraging these processes, it should be clear how to leverage Microsoft platforms. For organizations that are new to the topic, it should be clear how to bring this process to your environment and what it means to your organizational culture. This document explains the components of a Release Pipeline for configuration as code, the value to operations, and solutions that are used when designing a new Release Pipeline architecture.
 
-- everything is standard (the standard/best practice data being shared alongside the configuration script),
-- but can be overriden in specific cases when required (overriding a domain name, certificate and so on).
+## Project Guidelines
 
-This cannot be done out of the box (without tooling), but it's possible using custom scripts or module, as I intend to with the [Datum](https://github.com/gaelcolas/datum) module.
+The [DSC Resource repository](http://github.com/powershell/dscresources) includes guidance on authoring that is applicable to **DSC configurations** as well.
 
-The challenge is then to manage the config data for a shared config in a way compatible with using a Configuration Data management module or function.
+- [Repository Structure](./RepositoryStructure.md)
+- [Style Guidelines](./StyleGuidelines.md)
+- [Technical Summary](./TechnicalSummary.md)
 
-I see two possible approach:
+[DSC Resources]: https://docs.microsoft.com/en-us/powershell/dsc/resources/resources?view=dsc-1.1
+[AuditPolicyDsc]: https://github.com/dsccommunity/AuditPolicyDsc
+[ComputerManagementDsc]: https://github.com/dsccommunity/ComputerManagementDsc
+[SChannelDsc]: https://github.com/dsccommunity/SChannelDsc
+[SecurityPolicyDsc]: https://github.com/dsccommunity/SecurityPolicyDsc
+[WindowsDefenderDsc]: https://github.com/erjenkin/WindowsDefenderDsc
+[WSManDsc]: https://github.com/dsccommunity/WSManDsc
+[xPSDesiredStateConfiguration]: https://github.com/dsccommunity/xPSDesiredStateConfiguration
 
-- Conform with the most documented approach which is to cram properties under statically define values in hashtable: i.e. `$Node.Role.property` or `$AllNodes.Role.Property`, but that is very hacky or does not scale
-- Introduce the less documented, more flexible way to resolve a property for the current Node via a function: i.e. `Resolve-DscProperty -Node $Node -PropertyPath 'Role\Property'`
-
-The second one is more flexible (anyone can create their custom one), but probably needs some time and a lot of communication before taking precedence over the static way.
-
-We could [provide a standard, simple function](./SharedDscConfig/examples/scripts/Resolve-DscConfigurationData.ps1) to resolve the static properties when creating Shareable configurations, where the logic can be overriden where consuming that shared configuration.
-
-```PowerShell
-function Resolve-DscConfigurationData {
-    Param(
-        [hashtable]$Node,
-        [string]$PropertyPath,
-        [AllowNull()]
-        $Default
-    )
-
-    $paths = $PropertyPath -split '\\'
-    $CurrentValue = $Node
-    foreach ($path in $Paths) {
-        $CurrentValue = $CurrentValue.($path)
-    }
-
-    if ($null -eq $CurrentValue -and !$PSBoundParameters.ContainsKey('Default')) {
-        Throw 'Property returned $null but no default specified.'
-    }
-    elseif ($CurrentValue) {
-        Write-Output $CurrentValue
-    }
-    else {
-        Write-Output $Default
-    }
-}
-Set-Alias -Name ConfigData -value Resolve-DscConfigurationData
-Set-Alias -Name DscProperty -value Resolve-DscConfigurationData
-```
-
-This Allows to resolve static data so that:
-
-```PowerShell
-DscProperty -Node @{
-        NodeName='localhost';
-        a=@{
-            b=122
-        }
-    } -PropertyPath 'a\b'
-```
-
-Resolves to `122`, but another implementation of Resolve-DscConfigurationData could do a database lookup in the company's CMDB for instance.
-
-Doing so would allow to have functions to lookup for Configuration Data from the Shared Configuration, or from custom overrides.
-
-### Root Tree
-
-The root of the tree would be similar to a module root tree where you have supporting files for, say, the CI/CD integration.
-
-In this example, I'm illustrating the idea with:
-
-- a Build.ps1 that defines the build workflow by composing tasks (see [SampleModule](https://github.com/gaelcolas/SampleModule))
-- a Build/ folder, which includes the minimum tasks to bootstrap + custom ones
-- the .gitignore where folders like BuildOutput or kitchen specific files are added (`module/`)
-- the [PSDepend.Build.psd1](./PSDepend.Build.ps1), so that the build process can use [PSDepend](https://github.com/RamblingCookieMonster/PSDepend/) to pull any prerequisites to build this project
-- the Gitlab runner configuration file
-
-## Configuration Module Folder
-
-Very similar to a PowerShell Module folder, the Shared configuration re-use the same principles and techniques.
-
-The re-usable configuration itself is declared in the ps1, the metadata and dependencies in the psd1 to leverage all the goodies of module management, then we have some assets ordered in folders:
-
-- ConfigurationData: the default/example configuration data, organised in test suite/scenarios
-- Test Acceptance & Integration: the pester tests used to validate the configuration, per test suite/scenario
-- the examples of re-using that shared configuration, per test suite/scenario
-
-## YAML Reference Documentation
-
-The [YAML reference documentation](./doc/README.adoc) is located in the ./doc subfolder of this repository.
+[BuildHelpers]: https://github.com/RamblingCookieMonster/BuildHelpers
+[Datum]: https://github.com/gaelcolas/Datum
+[Datum.InvokeCommand]: https://github.com/raandree/Datum.InvokeCommand
+[Datum.ProtectedData]: https://github.com/gaelcolas/Datum.ProtectedData
+[DscBuildHelpers]: https://github.com/gaelcolas/DscBuildHelpers
+[InvokeBuild]: https://github.com/nightroman/Invoke-Build
+[Pester]: https://github.com/pester/Pester
+[powershell-yaml]: https://github.com/cloudbase/powershell-yaml
+[ProtectedData]: https://github.com/dlwyatt/ProtectedData/
+[PSScriptAnalyzer]: https://github.com/PowerShell/PSScriptAnalyzer
+[PSDeploy]: https://github.com/RamblingCookieMonster/PSDeploy
