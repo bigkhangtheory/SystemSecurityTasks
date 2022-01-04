@@ -280,9 +280,11 @@ SecurityPolicies:
     - Policy:   Deny_log_on_through_Remote_Desktop_Services
       Identity: "*S-1-5-7 *S-1-5-32-546"
       Force:    True
+
     - Policy:   Deny_log_on_locally
       Identity: "*S-1-5-7 *S-1-5-32-546"
       Force:    True
+      
     - Policy: Enable_computer_and_user_accounts_to_be_trusted_for_delegation
       Identity: ''
       Force: True
