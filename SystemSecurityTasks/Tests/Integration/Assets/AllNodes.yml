@@ -1,4 +1,4 @@
-- NodeName: '*'
-  PSDscAllowPlainTextPassword: true
-  PSDscAllowDomainUser: true
-  Environment: Dev
+NodeName: "DC-TEST-NODE"
+PSDscAllowPlainTextPassword: true
+PSDscAllowDomainUser: true
+Environment: Dev
