@@ -1,17 +1,23 @@
-# MaxEnvelopeSizekb
-#
-# Specifies the WS-Man maximum envelope size in KB.
-# The minimum value is 32 and the maximum is 4294967295.
 MaxEnvelopeSizekb: 8192
-
-# MaxTimeoutms
-#
-# Specifies the WS-Man maximum timeout in milliseconds.
-# The minimum value is 500 and the maximum is 4294967295.
 MaxTimeoutms: 60000
-
-# MaxBatchItems
-#
-# Specifies the WS-Man maximum batch items.
-# The minimum value is 1 and the maximum is 4294967295.
 MaxBatchItems: 32000
+
+Listener:
+  Transport: HTTPS
+  #Address: "*"
+  Issuer: EXAMPLE-CA
+  SubjectFormat: Both
+  DN: DC=example,DC=com
+  MatchAlternate: true
+
+Service:
+  MaxConnections: 600
+  MaxConcurrentOperationsPerUser: 1500
+  EnumerationTimeoutMS: 480000
+  MaxPacketRetrievalTimeSeconds: 120
+  AuthBasic: true
+  AuthKerberos: true
+  AuthNegotiate: true
+  AuthCertificate: false
+  AuthCredSSP: false
+  AuthCbtHardeningLevel: Strict

@@ -23,6 +23,7 @@
     },
     "editor.inlineHints.fontFamily": "'CaskaydiaCove NF',Consolas, 'Courier New', monospace",
     "editor.formatOnSave": true,
-    "editor.formatOnPaste": true
+    "editor.formatOnPaste": true,
+    "terminal.integrated.fontSize": 16
   }
 }
